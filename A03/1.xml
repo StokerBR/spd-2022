@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="UTF-8" ?><root><cpf type="str">1</cpf><nome type="str">2</nome><idade type="int">3</idade><salario type="float">4.0</salario><cargo type="str">5</cargo><habilidades type="list"><item type="str">a</item><item type="str">b</item><item type="str">c</item></habilidades></root>

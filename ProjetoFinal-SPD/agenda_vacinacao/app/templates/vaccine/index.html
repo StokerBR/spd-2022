@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}{{ is_search|yesno:'Busca,Lista' }}{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    {% include 'partials/alert.html' %}
+
+    <div class="row">
+        <div class="col-6">
+            <h2 class="mt-4 mb-4">{{ is_search|yesno:'Busca,Lista' }} de Vacinas</h2>
+        </div>
+        <div class="col-6">
+            <a href="{% url 'vaccine_create' %}" class="btn btn-success float-right p-3 mt-3 mb-3">Criar Vacinas</a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped text-center">
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Descrição</th>
+                    <th>Doses</th>
+                    <th>Periodicidade</th>
+                    <th>Intervalo</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for vacina in vacinas %}
+                    <tr>
+                        <td>{{ vacina.id }}</td>
+                        <td>{{ vacina.titulo }}</td>
+                        <td>{{ vacina.descricao }}</td>
+                        <td>{{ vacina.doses }}</td>
+                        {% for periodicidade, nome_periodicidade in periodicidades.items %}
+                            {% if vacina.periodicidade == periodicidade %}
+                                <td>{{ nome_periodicidade }}</td>
+                            {% endif %}
+                        {% endfor %}
+                        <td>{{ vacina.intervalo }}</td>
+                        <td>
+                            <a href="{% url 'vaccine_edit' id=vacina.id %}" class="btn btn-info" title="Editar"><i class="fas fa-pen"></i></a>
+                            <a href="{% url 'vaccine_delete' id=vacina.id %}" class="btn btn-danger" title="Deletar"><i class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+    </div>
+
+</div>
+
+{% endblock %}

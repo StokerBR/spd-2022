@@ -1,0 +1,15 @@
+Prerequisitos:
+
+	Ter django instalado
+		"pip instal Django"
+
+	Banco de dados PostgreSQL
+		Nome: spd
+		Usuário: postgres
+		Senha: postgres
+
+Comandos para execução:
+	No diretório "candidatos":
+		"python manage.py migrate" //para executar as migrations e preparar o banco
+		"python manage.py runserver" //para iniciar o servidor (será aberto em http://127.0.0.1:8000/)
+	(Para os comandos acima usar "python3" ao invés de "python" se estiver em linux)

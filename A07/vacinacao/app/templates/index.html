@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}{{ is_search|yesno:'Busca,Lista' }}{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    {% include 'partials/alert.html' %}
+    
+    <div class="row">
+        <div class="col-6">
+            <h2 class="mt-4 mb-4">{{ is_search|yesno:'Busca,Lista' }} de Usuários</h2>
+        </div>
+        <div class="col-6">
+            <a href="{% url 'create' %}" class="btn btn-success float-right p-3 mt-3 mb-3">Criar Usuário</a>
+        </div>
+    </div>
+
+    <form action="{% url 'search' %}" method="GET">
+
+        <div class="input-group mb-4">
+            <input type="number" name="id" class="form-control" placeholder="Consulta por ID" aria-label="Consulta por ID" aria-describedby="basic-addon2" required {% if is_search %} value="{{ search_id }}" {% endif %}>
+            {% if is_search %}
+                <div class="input-group-append">
+                    <a class="btn btn-secondary" href="{% url 'index' %}">Limpar Busca</a>
+                </div>
+            {% endif %}
+            <div class="input-group-append">
+                <button class="btn btn-info" type="submit">Buscar</button>
+            </div>
+        </div>
+
+    </form>
+
+    <table class="table table-striped text-center">
+
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Data Nascimento</th>
+                <th>Sexo</th>
+                <th>Lougradouro</th>
+                <th>Número</th>
+                <th>Setor</th>
+                <th>Cidade</th>
+                <th>UF</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for usuario in usuarios %}
+                <tr>
+                    <td>{{ usuario.id }}</td>
+                    <td>{{ usuario.nome }}</td>
+                    <td>{{ usuario.dt_nasc|date:"d/m/Y" }}</td>
+                    <td>{{ usuario.sexo }}</td>
+                    <td>{{ usuario.lougradouro }}</td>
+                    <td>{{ usuario.numero }}</td>
+                    <td>{{ usuario.setor }}</td>
+                    <td>{{ usuario.cidade }}</td>
+                    <td>{{ usuario.uf }}</td>
+                    <td>
+                        <a href="{% url 'edit' id=usuario.id %}" class="btn btn-info"><i class="fas fa-pen"></i></a>
+                        <a href="{% url 'delete' id=usuario.id %}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                    </td>
+                </tr>
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

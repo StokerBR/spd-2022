@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}{{ is_search|yesno:'Busca,Lista' }}{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    {% include 'partials/alert.html' %}
+    
+    <div class="row">
+        <div class="col-6">
+            <h2 class="mt-4 mb-4">{{ is_search|yesno:'Busca,Lista' }} de Usuários</h2>
+        </div>
+        <div class="col-6">
+            <a href="{% url 'user_create' %}" class="btn btn-success float-right p-3 mt-3 mb-3">Criar Usuário</a>
+        </div>
+    </div>
+    
+    <div class="table-responsive">
+        <table class="table table-striped text-center">
+    
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Data Nascimento</th>
+                    <th>Sexo</th>
+                    <th>Lougradouro</th>
+                    <th>Número</th>
+                    <th>Setor</th>
+                    <th>Cidade</th>
+                    <th>UF</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+    
+            <tbody>
+    
+                {% for usuario in usuarios %}
+                    <tr>
+                        <td>{{ usuario.id }}</td>
+                        <td>{{ usuario.nome }}</td>
+                        <td>{{ usuario.data_nascimento|date:"d/m/Y" }}</td>
+                        <td>{{ usuario.sexo }}</td>
+                        <td>{{ usuario.lougradouro }}</td>
+                        <td>{{ usuario.numero }}</td>
+                        <td>{{ usuario.setor }}</td>
+                        <td>{{ usuario.cidade }}</td>
+                        <td>{{ usuario.uf }}</td>
+                        <td>
+                            <a href="{% url 'user_edit' id=usuario.id %}" class="btn btn-info" title="Editar"><i class="fas fa-pen"></i></a>
+                            <a href="{% url 'allergy_index' usuario_id=usuario.id %}" class="btn btn-dark" title="Alergias"><i class="fas fa-person-dots-from-line"></i></a>
+                            <a href="{% url 'user_delete' id=usuario.id %}" class="btn btn-danger" title="Deletar"><i class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+    
+            </tbody>
+    
+        </table>
+    </div>
+
+</div>
+
+{% endblock %}

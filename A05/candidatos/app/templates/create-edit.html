@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Lista{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    
+    <h2 class="mt-4 mb-4">{{ is_edit|yesno:'Editar,Criar' }} de Candidato</h2>
+
+    <form action="{% url is_edit|yesno:'update,insert' %}" method="POST">
+        
+        {% csrf_token %}
+
+        {% if is_edit %}
+            <input type="number" name="codigo" value="{{ candidato.codigo }}" hidden class="d-none" required>
+        {% endif %}
+
+        <div class="row">
+
+            <div class="col-6 form-group">
+                <label>Nome</label>
+                <input type="text" name="nome" class="form-control" value="{{ candidato.nome }}" placeholder="Nome" maxlength="60" required>
+            </div>
+
+            <div class="col-6 form-group">
+                <label>Sexo</label>
+                <select name="sexo" class="form-control" required>
+                    <option value="">Selecione</option>
+                    <option {% if candidato.sexo == 'm' %}selected{% endif %} value="m">Masculino</option>
+                    <option {% if candidato.sexo == 'f' %}selected{% endif %} value="f">Feminino</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-6 form-group">
+                <label>Data de Nascimento</label>
+                <input type="date" name="data_nasc" class="form-control" value="{{ candidato.data_nasc|date:"Y-m-d" }}" required>
+            </div>
+
+            <div class="col-6 form-group">
+                <label>Cargo Pretendido</label>
+                <input type="text" name="cargo_pretendido" class="form-control" value="{{ candidato.cargo_pretendido }}" placeholder="Cargo" maxlength="25" required>
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            <label>Currículo</label>
+            <textarea name="texto_curriculo" class="form-control" rows="3" maxlength="800" required>{{ candidato.texto_curriculo }}</textarea>
+        </div>
+
+        <button class="btn btn-success" type="submit">Salvar</button>
+
+    </form>
+
+</div>
+
+{% endblock %}

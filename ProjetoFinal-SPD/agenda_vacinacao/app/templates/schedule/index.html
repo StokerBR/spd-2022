@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Lista{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    {% include 'partials/alert.html' %}
+    
+    <div class="row">
+        <div class="col-6">
+            <h2 class="mt-4 mb-4">Lista de Agendas</h2>
+        </div>
+        <div class="col-6">
+            <a href="{% url 'schedule_create' %}" class="btn btn-success float-right p-3 mt-3 mb-3">Criar Agenda</a>
+        </div>
+    </div>
+
+    <form action="{% url 'schedule_index' %}" method="GET">
+
+        <div class="input-group mb-4">
+            <select name="situacao" class="form-control" aria-describedby="basic-addon2">
+                <option value="">Todas as Situações</option>
+                {% for s in situacoes %}
+                    <option value="{{ s }}" {% if situacao == s %} selected {% endif %}>{{ s }}</option>
+                {% endfor %}
+            </select>
+            <div class="input-group-append">
+                <button class="btn btn-info" type="submit">Filtrar</button>
+            </div>
+        </div>
+
+    </form>
+    
+    <div class="table-responsive">
+        <table class="table table-striped text-center">
+    
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Usuário</th>
+                    <th>Vacina</th>
+                    <th>Data</th>
+                    <th>Hora</th>
+                    <th>Situação</th>
+                    <th>Data Situação</th>
+                    <th>Observações</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+    
+            <tbody>
+    
+                {% for agenda in agendas %}
+                    <tr>
+                        <td>{{ agenda.id }}</td>
+                        <td>{{ agenda.usuario.nome }}</td>
+                        <td>{{ agenda.vacina.titulo }}</td>
+                        <td>{{ agenda.data|date:"d/m/Y" }}</td>
+                        <td>{{ agenda.hora }}</td>
+                        <td>{{ agenda.situacao }}</td>
+                        
+                        {% if agenda.data_situacao %}
+                            <td>{{ agenda.data_situacao|date:"d/m/Y" }}</td>
+                        {% else %}
+                            <td>-</td>
+                        {% endif %}
+                        
+                        {% if agenda.observacoes %}
+                            <td>{{ agenda.observacoes }}</td>
+                        {% else %}
+                            <td>-</td>
+                        {% endif %}
+                        <td>
+                            <a href="{% url 'schedule_perform' id=agenda.id %}" class="btn btn-success" title="Realizar"><i class="fas fa-check"></i></a>
+                            <a href="{% url 'schedule_cancel' id=agenda.id %}" class="btn btn-dark" title="Cancelar"><i class="fas fa-times"></i></a>
+                            <a href="{% url 'schedule_delete' id=agenda.id %}" class="btn btn-danger" title="Deletar"><i class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+    
+            </tbody>
+    
+        </table>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}{{ is_edit|yesno:'Editar,Criar' }}{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <h2 class="mt-4 mb-4">{{ is_edit|yesno:'Editar,Criar' }} Vacina</h2>
+
+    <form action="{% url is_edit|yesno:'vaccine_update,vaccine_insert' %}" method="POST">
+
+        {% csrf_token %}
+
+        {% if is_edit %}
+            <input type="number" name="id" value="{{ vacina.id }}" hidden class="d-none" required>
+        {% endif %}
+
+        <div class="row">
+
+            <div class="col-4 form-group">
+                <label>Titulo</label>
+                <input type="text" name="titulo" class="form-control" value="{{ vacina.titulo }}" placeholder="Titulo" maxlength="60" required>
+            </div>
+
+            <div class="col-8 form-group">
+                <label>Descrição</label>
+                <input type="text" name="descricao" class="form-control" value="{{ vacina.descricao }}" placeholder="Descrição" maxlength="60" required>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-4 form-group">
+                <label>Doses</label>
+                <input type="number" name="doses" class="form-control" value="{{ vacina.doses }}" placeholder="Doses" maxlength="5" required>
+            </div>
+
+            <div class="col-4 form-group">
+                <label>Periodicidade</label>
+                {% comment %} <input type="number" name="periodicidade" class="form-control" value="{{ vacina.periodicidade }}" placeholder="Periodicidade" maxlength="1" required> {% endcomment %}
+                <select name="periodicidade" class="form-control" required>
+                    <option value="">Selecione</option>
+                    <option {% if vacina.periodicidade == 1 %}selected{% endif %} value=1>Dia</option>
+                    <option {% if vacina.periodicidade == 2 %}selected{% endif %} value=2>Semana</option>
+                    <option {% if vacina.periodicidade == 3 %}selected{% endif %} value=3>Mês</option>
+                    <option {% if vacina.periodicidade == 4 %}selected{% endif %} value=4>Ano</option>
+                </select>
+            </div>
+
+            <div class="col-4 form-group">
+                <label>Intervalo</label>
+                <input type="number" name="intervalo" class="form-control" value="{{ vacina.intervalo }}" placeholder="Intervalo" maxlength="5" required>
+            </div>
+
+        </div>
+
+        <button class="btn btn-success" type="submit">Salvar</button>
+
+    </form>
+
+</div>
+
+{% endblock %}

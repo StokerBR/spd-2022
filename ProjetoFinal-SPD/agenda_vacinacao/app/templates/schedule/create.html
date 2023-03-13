@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Criar{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    
+    <h2 class="mt-4 mb-4">Criar Agenda</h2>
+
+    <form action="{% url 'schedule_insert' %}" method="POST">
+        
+        {% csrf_token %}
+
+        <div class="row">
+
+            <div class="col-6 form-group">
+                <label>Usuário</label>
+                <select name="usuario_id" class="form-control" required>
+                    <option value="">Selecione</option>
+                    {% for usuario in usuarios %}
+                        <option value="{{ usuario.id }}">{{ usuario.nome }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-6 form-group">
+                <label>Vacina</label>
+                <select name="vacina_id" class="form-control" required>
+                    <option value="">Selecione</option>
+                    {% for vacina in vacinas %}
+                        <option value="{{ vacina.id }}">{{ vacina.titulo }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+        </div>
+
+        <div class="row">
+
+            <div class="col-6 form-group">
+                <label>Data</label>
+                <input type="date" name="data" class="form-control" required>
+            </div>
+
+            <div class="col-6 form-group">
+                <label>Hora</label>
+                <input type="time" name="hora" class="form-control" required>
+            </div>
+            
+        </div>
+
+        <div class="form-group">
+            <label>Observações</label>
+            <textarea name="observacoes" class="form-control" rows="3" maxlength="200"></textarea>
+        </div>
+
+        <button class="btn btn-success" type="submit">Salvar</button>
+
+    </form>
+
+</div>
+
+{% endblock %}
